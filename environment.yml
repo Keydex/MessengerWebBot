@@ -1,0 +1,10 @@
+name: webcreator
+channels:
+  - conda-forge
+dependencies:
+  - python=3.7
+  - numpy=1.9.*
+  - flask=0.12.2
+  - request
+  - python-dotenv
+  - ngrok
