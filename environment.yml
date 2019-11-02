@@ -7,4 +7,3 @@ dependencies:
   - flask=0.12.2
   - request
   - python-dotenv
-  - ngrok
