@@ -1,0 +1,33 @@
+{
+    "initial_msg":{
+      "en":"Hello {name}, Would you like to create a free webpage on another site for your business?",
+      "cn":"{name}，您好：您想在其他网站上为您的企业创建免费的网页吗"
+    },
+    
+  
+    "initial_msg_response1":{
+      "en":"Yes",
+      "cn":"要"
+    },
+    
+    
+    "initial_msg_response2":{
+      "en":"No",
+      "cn":"不要"
+    },
+    
+    "product_page":{
+        "en":"Great! Please tell me a bit about your",
+        "cn":"asd"
+      },
+    "product_page_response1":{
+      "en":"Business",
+      "cn":"商业"
+    },
+    
+    "product_page_response2":{
+      "en":"Community",
+      "cn":"社区"
+    }
+    
+  }
