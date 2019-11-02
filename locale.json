@@ -1,7 +1,7 @@
 {
     "initial_msg":{
-      "en":"Hello {name}, Would you like to create a free webpage on another site for your business?",
-      "cn":"{name}，您好：您想在其他网站上为您的企业创建免费的网页吗"
+      "en":"Hello Anthony, Would you like to create a free webpage on another site for your business?",
+      "cn":"Anthony，您好：您想在其他网站上为您的企业创建免费的网页吗"
     },
     
   
@@ -37,40 +37,37 @@
     },
     
     "business_name":{
-      "en":"Name: ",
-      "cn":"名称"
+      "en":"What is your business name?",
+      "cn":"您的商家名称是什么?"
     },
     
     "business_address":{
-      "en":"Location: ",
-      "cn":"地址"
+      "en":"What is your business address?",
+      "cn":"您的营业地址是什么?"
     },
      
     "business_phoneNumber":{
-      "en":"Phone Number: ",
-      "cn":"电话"
+      "en":"What is your business phone number?",
+      "cn":"您的公司电话号码是多少?"
     },
     
     "business_email":{
-      "en":"Email: ",
-      "cn":"邮件"
+      "en":"What is your business email?",
+      "cn":"您的公司电子邮件是什么？"
     },
     
-    "business_hoursOfOperation":{
-      "en":"Hours of Operation",
-      "cn":"营业时间" },
-    
+  
     "service_categories":{
       "en":"Please select the categories offered",
-      "cn":"请选择提供的类别" },
+      "cn":"请选择提供的类别" } ,
       
     "service_categories_response1":{
       "en":"Appetizers",
-      "cn":"开胃菜" },
+      "cn":"开胃菜" } ,
       
     "service_categories_response2":{
       "en":"Entrées",
-      "cn":"主菜" },  
+      "cn":"主菜" }  ,
       
     "service_categories_response3":{
       "en":"Desserts",
@@ -90,5 +87,6 @@
       
     "service_categories_food_description":{
       "en":"Description",
-      "cn":"食谱"} 
-  }
+      "cn":"食谱"}
+      
+    }

@@ -5,6 +5,12 @@ class user:
         self.testvar = 'test'
         self.currState = 'initial'
         self.websites = []
+        self.websiteName = ''
+        self.slogan = ''
+        self.slogan2 = "Another Text"
+        self.address = ''
+        self.phoneNumber = ''
+        self.email = ''
 
     def updateState(self, newState):
         self.currState = newState
