@@ -1,3 +1,4 @@
+import globalVar
 class user:
     def __init__(self, userID):
         self.userID = userID
@@ -8,9 +9,9 @@ class user:
     def updateState(self, newState):
         self.currState = newState
 
-def resetState(state):
-    state.clear()
+def resetState():
+    globalVar.userState.clear()
 
-def createUser(userID, state):
-    state[userID] = user
+def createUser(userID):
+    globalVar.userState[userID] = user
     print('Create new user!')

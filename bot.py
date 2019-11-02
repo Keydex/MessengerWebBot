@@ -2,12 +2,15 @@
 import random
 import os
 from dotenv import load_dotenv
-from flask import Flask, request
+from flask import Flask, request, jsonify
 from pymessenger.bot import Bot
 import json
 from user import user, resetState, createUser
 from helper import get_message, send_message
 from website import website, product
+import facebook
+from debugtools import middleWare
+import globalVar
 
 with open('locale.json') as json_file:
     localdata = json.load(json_file)
@@ -18,15 +21,16 @@ app = Flask(__name__)
 ACCESS_TOKEN = os.getenv("ACCESS_TOKEN")
 VERIFY_TOKEN = os.getenv("VERIFY_TOKEN")
 bot = Bot(ACCESS_TOKEN)
-
-
-# Store Conversation State here
-userState = {}
+graph = facebook.GraphAPI(access_token=ACCESS_TOKEN, version="2.12")
+buildJson = {}
 
 def sendInitialMessage(userID):
-    response = 'This should be the first message I send you back!'
+    response = localdata["initial_msg"][globalVar.locale]
     bot.send_text_message(userID, response)
 
+@app.route("/testuser", methods=['GET'])
+def sendJson():
+    return jsonify(buildJson)
 
 #We will receive messages that Facebook sends our bot at this endpoint 
 @app.route("/", methods=['GET'])
@@ -52,13 +56,10 @@ def receive_message():
             if message.get('message'):
                 recipient_id = message['sender']['id']
                 print("Processing Message")
-                if message['message'].get('text') == 'debugReset':
-                    resetState(userState)
-                    send_message(recipient_id, 'Debug: Your State should now be reset!', bot)
-                    print('Resetting State')
+                if (middleWare(message, recipient_id, bot) == True):
                     return "Message Processed"
-                if (recipient_id not in userState):
-                    createUser(recipient_id, userState)
+                if (recipient_id not in globalVar.userState):
+                    createUser(recipient_id)
                     sendInitialMessage(recipient_id)
                     print('Sending initial Message')
                 else: 

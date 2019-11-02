@@ -18,8 +18,9 @@
     
     "product_page":{
         "en":"Great! Please tell me a bit about your",
-        "cn":"asd"
+        "cn":"请告诉我一些关于您的"
       },
+      
     "product_page_response1":{
       "en":"Business",
       "cn":"商业"
@@ -28,6 +29,66 @@
     "product_page_response2":{
       "en":"Community",
       "cn":"社区"
-    }
+    },
     
+    "template":{
+      "en":"What is the template you would like to use?",
+      "cn":"您想使用什么模板"
+    },
+    
+    "business_name":{
+      "en":"Name: ",
+      "cn":"名称"
+    },
+    
+    "business_address":{
+      "en":"Location: ",
+      "cn":"地址"
+    },
+     
+    "business_phoneNumber":{
+      "en":"Phone Number: ",
+      "cn":"电话"
+    },
+    
+    "business_email":{
+      "en":"Email: ",
+      "cn":"邮件"
+    },
+    
+    "business_hoursOfOperation":{
+      "en":"Hours of Operation",
+      "cn":"营业时间" },
+    
+    "service_categories":{
+      "en":"Please select the categories offered",
+      "cn":"请选择提供的类别" },
+      
+    "service_categories_response1":{
+      "en":"Appetizers",
+      "cn":"开胃菜" },
+      
+    "service_categories_response2":{
+      "en":"Entrées",
+      "cn":"主菜" },  
+      
+    "service_categories_response3":{
+      "en":"Desserts",
+      "cn":"点心" },
+      
+    "service_categories_food":{
+      "en":"Please enter information about the dishes offered",
+      "cn":"请输入有关所提供菜肴的信息" },
+      
+    "service_categories_food_name":{
+      "en":"Name",
+      "cn":"名称"},
+      
+      "service_categories_food_price":{
+      "en":"Price",
+      "cn":"价格"},
+      
+    "service_categories_food_description":{
+      "en":"Description",
+      "cn":"食谱"} 
   }
