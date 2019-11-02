@@ -11,10 +11,7 @@ from website import website, product
 import facebook
 from debugtools import middleWare
 import globalVar
-
-with open('locale.json') as json_file:
-    localdata = json.load(json_file)
-
+import buttons
 
 load_dotenv()
 app = Flask(__name__)
@@ -25,8 +22,22 @@ graph = facebook.GraphAPI(access_token=ACCESS_TOKEN, version="2.12")
 buildJson = {}
 
 def sendInitialMessage(userID):
-    response = localdata["initial_msg"][globalVar.locale]
-    bot.send_text_message(userID, response)
+    response = globalVar.localdata["initial_msg"][globalVar.locale]
+    bot.send_button_message(userID, response, buttons.initial)
+
+def getPayload(message):
+    return (message['postback']['payload'])
+
+def startWebsite(userID, message, type='text'):
+    response_yes = globalVar.localdata["product_page"][globalVar.locale]
+    if type == 'payload' and getPayload(message) == 'yes':
+        bot.send_button_message(userID, response_yes, buttons.business_type)
+        return
+    elif type == 'payload' and getPayload(message) == 'no':
+        response_no = "Todo fill this later"
+        send_message(userID, response_no,bot)
+        return
+
 
 @app.route("/testuser", methods=['GET'])
 def sendJson():
@@ -43,30 +54,41 @@ def verify_message():
 #We will receive messages that Facebook sends our bot at this endpoint 
 @app.route("/", methods=['POST'])
 def receive_message():
-    print('Received Message')
-    # get whatever message a user sent the bot
-    output = request.get_json()
-    for event in output['entry']:
-        if (event['messaging'] is None):
-            print('No messages in event')
-            return "Message Processed"
-        messaging = event['messaging']
-        for message in messaging:
-        # Check if user exists in state management, if not create user
-            if message.get('message'):
-                recipient_id = message['sender']['id']
-                print("Processing Message")
-                if (middleWare(message, recipient_id, bot) == True):
-                    return "Message Processed"
-                if (recipient_id not in globalVar.userState):
-                    createUser(recipient_id)
-                    sendInitialMessage(recipient_id)
-                    print('Sending initial Message')
-                else: 
-                    if message.get('message'):
-                        print(message['message'].get('text'))
-                        send_message(recipient_id, 'This should be the same message now', bot)
-    return "Message Processed"
+    try:
+        print('Received Message')
+        # get whatever message a user sent the bot
+        output = request.get_json()
+        for event in output['entry']:
+            if ("messaging" not in event):
+                print('No messages in event')
+                return "Message Processed"
+            messaging = event['messaging']
+            for message in messaging:
+            # Check if user exists in state management, if not create user
+                if message.get('message'):
+                    recipient_id = message['sender']['id']
+                    print("Processing Message")
+                    if (middleWare(message, recipient_id, bot) == True):
+                        return "Message Processed"
+                    if (recipient_id not in globalVar.userState):
+                        createUser(recipient_id)
+                        sendInitialMessage(recipient_id)
+                        print('Created user with id ', recipient_id)
+                        return "Messaged Processed"
+                    else: 
+                        if globalVar.userState[recipient_id].currState == 'initial':
+                            startWebsite(recipient_id, message['message'].get('text'), 'text')
+                            if(message['message'].get('text') == 'yes'):
+                                return "test"
+                if message.get('postback'):
+                    recipient_id = message['sender']['id']
+                    if globalVar.userState[recipient_id].currState == 'initial':
+                        startWebsite(recipient_id, message, 'payload')
+
+        return "Message Processed"
+    except:
+        print("There was an error bug I'm ignoring it")
+        return "Errored out!"
 
 
 def verify_fb_token(token_sent):

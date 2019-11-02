@@ -13,5 +13,5 @@ def resetState():
     globalVar.userState.clear()
 
 def createUser(userID):
-    globalVar.userState[userID] = user
+    globalVar.userState[userID] = user(userID)
     print('Create new user!')
