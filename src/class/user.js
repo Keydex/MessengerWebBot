@@ -1,11 +1,11 @@
 class User {
-  constructor(userObj) {
-    const {user_id, chatState, websiteData, created, modified} = userObj;
+  constructor(user_id) {
+    this._user = {};
     this._user.user_id = user_id;
-    this._user.chatState = chatState || 'Initial';
-    this._user.websiteData = websiteData || {};
-    this._user.created = created || new Date().toISOString();
-    this._user.modified = modified || new Date().toISOString();
+    this._user.chatState = 'Initial';
+    this._user.websiteData = {};
+    this._user.created = new Date().toISOString();
+    this._user.modified = new Date().toISOString();
   }
 
   get user_id() {
@@ -34,6 +34,7 @@ class User {
     this._user.modified = modified;
   }
 
+  // Change this to get all variables into object
   export() {
     return this._user;
   }
@@ -44,3 +45,5 @@ class User {
     return userModel.update(this._user, originalVersionKey);
   }
 }
+
+module.exports = User;

@@ -1,7 +1,7 @@
 /* eslint-disable max-classes-per-file */
 const AWS = require('aws-sdk');
 const uuid = require('node-uuid');
-
+const User = require('../class/user');
 const s3 = new AWS.S3();
 // Create a bucket and upload something into it
 
@@ -29,12 +29,14 @@ exports.createUser = async (user_id) => {
 };
 
 exports.getByID = async (user_id) => {
+  console.log("GetbyID", user_id);
   const params = {
     TableName,
     Item: {
       USER_ID: user_id,
     },
   };
+  console.log("trying to getByID")
   return ddb.get(params, (err, data) => {
     if (err) {
       console.log('Error', err);
