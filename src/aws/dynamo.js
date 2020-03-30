@@ -32,7 +32,7 @@ exports.createUser = async (user_id) => {
       }
     })
     .promise();
-    console.log("CreateUser Result", result);
+  console.log('CreateUser Result', result);
   return result;
 };
 
@@ -44,15 +44,35 @@ exports.getByID = async (user_id) => {
       USER_ID: user_id,
     },
   };
-  const result = await ddb
-    .get(params, (err, data) => {
-      if (err) {
-        console.log('Error', err);
-        returnObject.errors.push(setError('createUser', err));
-      } else {
-        console.log('Success', data);
+  await ddb.get(params, (err, data) => {
+    if (err) {
+      console.log('Error', err);
+      returnObject.errors.push(setError('createUser', err));
+    } else {
+      console.log('Success', data);
+      returnObject.data = data.Item.data;
+    }
+  });
+
+  return returnObject;
+};
+
+exports.verifyUserExists = async (user_id) => {
+  const params = {
+    TableName,
+    Key: {
+      USER_ID: user_id,
+    },
+  };
+  await ddb.get(params, (err, data) => {
+    if (err) {
+      console.log('Error', err);
+    } else {
+      console.log("Weird validation", data);
+      if (data.Item === undefined || data.Item.data === undefined) {
+        return false;
       }
-    })
-    .promise();
-  return result;
+      return true;
+    }
+  });
 };

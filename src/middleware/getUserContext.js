@@ -5,9 +5,9 @@ exports.getUserContext = async (req, res, next) => {
   console.log('Entered middleware');
   const event = req.body.entry[0].messaging[0];
   const userId = parseInt(event.sender.id, 10);
-  const result = await dynamo.getByID(userId);
-  if (result.Item !== undefined && result !== {}) {
-    res.locals.userObj = result.Item.data;
+  if (await dynamo.verifyUserExists(userId)) {
+    const result = await dynamo.getByID(userId);
+    res.locals.userObj = result.data;
     console.log('Successfully retrieved userData');
   } else {
     console.log('Creating new user');
@@ -20,6 +20,7 @@ exports.getUserContext = async (req, res, next) => {
   }
   res.locals.event = event;
   res.locals.userId = userId;
+  res.locals.text = res.locals.event.text;
   console.log('Finished middleware');
   next();
 };
