@@ -2,14 +2,15 @@
 const AWS = require('aws-sdk');
 const uuid = require('node-uuid');
 const User = require('../class/user');
-const s3 = new AWS.S3();
+const setError = require('../helper/error');
 // Create a bucket and upload something into it
 
 AWS.config.update({region: 'us-east-2'});
-const ddb = new AWS.DynamoDB.DocumentClient();
+const ddb = new AWS.DynamoDB.DocumentClient({apiVersion: '2012-08-10'});
 const TableName = 'webcreator';
 
 exports.createUser = async (user_id) => {
+  const returnObject = {errors: []};
   const newUser = new User(parseInt(user_id, 10));
   const params = {
     TableName,
@@ -17,31 +18,41 @@ exports.createUser = async (user_id) => {
       USER_ID: newUser.user_id,
       data: newUser.export(),
     },
+    ReturnValues: 'ALL_OLD',
   };
-  console.log(params);
-  ddb.put(params, (err, data) => {
-    if (err) {
-      console.log('Error', err);
-    } else {
-      console.log('Success', data);
-    }
-  });
+  // TODO: Find out how to properly return returnObject synchronously
+  const result = await ddb
+    .put(params, (err, data) => {
+      if (err) {
+        console.log('Error', err);
+        returnObject.errors.push(setError('createUser', err));
+      } else {
+        console.log('Success', data);
+        returnObject.data = data;
+      }
+    })
+    .promise();
+    console.log("CreateUser Result", result);
+  return result;
 };
 
 exports.getByID = async (user_id) => {
-  console.log("GetbyID", user_id);
+  const returnObject = {errors: []};
   const params = {
     TableName,
-    Item: {
+    Key: {
       USER_ID: user_id,
     },
   };
-  console.log("trying to getByID")
-  return ddb.get(params, (err, data) => {
-    if (err) {
-      console.log('Error', err);
-    } else {
-      console.log('Success', data);
-    }
-  });
+  const result = await ddb
+    .get(params, (err, data) => {
+      if (err) {
+        console.log('Error', err);
+        returnObject.errors.push(setError('createUser', err));
+      } else {
+        console.log('Success', data);
+      }
+    })
+    .promise();
+  return result;
 };

@@ -1,19 +1,18 @@
 require('dotenv').config();
 const express = require('express');
-
 const app = express();
 const port = 3000;
 const {MessengerClient} = require('messaging-api-messenger');
+const bodyParser = require('body-parser');
+
 // get accessToken from facebook developers website
 // const client = MessengerClient.connect(process.env.ACCESS_TOKEN);
-// Mock mode
 
 const client = MessengerClient.connect({
   accessToken: process.env.ACCESS_TOKEN,
   origin: 'https://mockserver232sadf.com',
 });
 
-const bodyParser = require('body-parser');
 const verifyWebhook = require('./src/validation/verifyWebhook');
 
 app.use(bodyParser.urlencoded({extended: false}));
@@ -22,7 +21,6 @@ app.use(bodyParser.json());
 // Middleware
 const getUser = require('./src/middleware/getUserContext');
 app.use(getUser.getUserContext);
-
 
 // Facebook validate application
 app.get('/', verifyWebhook);
@@ -35,7 +33,7 @@ app.post('/', (req, res) => {
   const {text} = event.message;
   client.sendText(userId, text);
   console.log(userId);
-  res.send('Hello World!');
+  res.send(res.locals.userObj);
 });
 
 
