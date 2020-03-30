@@ -22,16 +22,16 @@ app.use(bodyParser.json());
 // Middleware
 const getUser = require('./src/middleware/getUserContext');
 
-app.use(getUser.getUserContext);
 
 // Facebook validate application
 app.get('/', verifyWebhook);
 
 // Messenger bot callback
-app.post('/', (req, res) => {
+app.post('/', getUser.getUserContext, (req, res) => {
   console.log('Received Message from User!');
   console.log('information', res.locals.userId.toString(), res.locals.text);
-  client.sendText(res.locals.userId.toString(), res.locals.text);
+  // client.sendText(res.locals.userId.toString(), res.locals.text);
+  console.log('res.locals.userObj', res.locals.userObj);
   res.status(200).send(res.locals.userObj);
 });
 

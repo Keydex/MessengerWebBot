@@ -5,56 +5,51 @@ const User = require('../class/user');
 const setError = require('../helper/error');
 // Create a bucket and upload something into it
 
-AWS.config.update({region: 'us-east-2'});
+AWS.config = new AWS.Config();
+AWS.config.accessKeyId = process.env.AWS_ACCESS_KEY;
+AWS.config.secretAccessKey = process.env.AWS_SECRET_KEY;
+AWS.config.region = "us-east-2";
 const ddb = new AWS.DynamoDB.DocumentClient({apiVersion: '2012-08-10'});
 const TableName = 'webcreator';
 
-exports.createUser = async (user_id) => {
-  const returnObject = {errors: []};
-  const newUser = new User(parseInt(user_id, 10));
+exports.createUser = async (userObj) => {
   const params = {
     TableName,
     Item: {
-      USER_ID: newUser.user_id,
-      data: newUser.export(),
+      USER_ID: userObj.user_id,
+      data: userObj,
     },
-    ReturnValues: 'ALL_OLD',
   };
   // TODO: Find out how to properly return returnObject synchronously
-  const result = await ddb
+  const response = await ddb
     .put(params, (err, data) => {
       if (err) {
-        console.log('Error', err);
-        returnObject.errors.push(setError('createUser', err));
+        console.log('Error -', err);
       } else {
-        console.log('Success', data);
-        returnObject.data = data;
+        console.log('Success - new user created', data);
       }
-    })
-    .promise();
-  console.log('CreateUser Result', result);
-  return result;
+    }).promise();
+  console.log('CreateUser Result', response);
+  return await response;
 };
 
 exports.getByID = async (user_id) => {
-  const returnObject = {errors: []};
   const params = {
     TableName,
     Key: {
       USER_ID: user_id,
     },
+    ConsistentRead: true,
   };
-  await ddb.get(params, (err, data) => {
+  let response = await ddb.get(params, (err, data) => {
     if (err) {
-      console.log('Error', err);
-      returnObject.errors.push(setError('createUser', err));
+      console.log(err)
     } else {
-      console.log('Success', data);
-      returnObject.data = data.Item.data;
+      console.log(data);
     }
-  });
-
-  return returnObject;
+  }).promise();
+  console.log(response);
+  return await response;
 };
 
 exports.verifyUserExists = async (user_id) => {

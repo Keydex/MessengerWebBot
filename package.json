@@ -17,6 +17,7 @@
     "express": "^4.17.1",
     "messaging-api-messenger": "^0.8.2",
     "node-uuid": "^1.4.8",
+    "nodemon": "^2.0.2",
     "prettier": "^2.0.2"
   },
   "devDependencies": {
