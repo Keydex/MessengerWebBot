@@ -1,7 +1,7 @@
 # MessengerWebBot
 Dynamically Build Websites Using Facebook's Messenger API
 
-![Bot_example](https://imgur.com/a/AJpPclk)
+![Bot_example](https://i.imgur.com/UziF4z5.png)
 
 # Getting Started
 Install [conda](https://docs.conda.io/projects/conda/en/latest/user-guide/install/macos.html)
